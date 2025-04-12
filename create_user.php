@@ -23,8 +23,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password_hash = password_hash($password, PASSWORD_BCRYPT);
 
     // Шифруємо пароль
-    $encryption_key = "my-secret-key"; // краще зберігати у .env або config.php
-    $iv = openssl_random_pseudo_bytes(16); // 16 байт для AES-256-CBC
+    $config = include('config.php');
+    $encryption_key = $config['encryption_key'];
+    $iv = openssl_random_pseudo_bytes(16); 
     $encrypted = openssl_encrypt($password, 'aes-256-cbc', $encryption_key, 0, $iv);
     $password_encrypted = base64_encode($iv . $encrypted);
 
