@@ -12,7 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($user && isset($user['password_encrypted'])) {
-            $encryption_key = "my-secret-key";
+            $config = include('config.php');
+            $encryption_key = $config['encryption_key'];
 
             // Декодуємо base64
             $encrypted_data = base64_decode($user['password_encrypted']);
