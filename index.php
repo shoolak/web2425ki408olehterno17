@@ -38,6 +38,24 @@
     </form>
     <div id="getResult"></div>
 
+    <!-- Форма реєстрації -->
+    <h2>Реєстрація</h2>
+    <form action="create_user.php" method="POST">
+        <label for="name">Ім'я:</label>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="password">Пароль:</label>
+        <input type="password" id="password" name="password" required><br><br>
+
+        <button type="submit">Зареєструватися</button>
+    </form>
+    
+    <a href="login.php">Увійти</a>
+
+
     <script src="script.js"></script>
 </body>
 </html>
