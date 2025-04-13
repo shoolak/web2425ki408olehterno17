@@ -1,5 +1,6 @@
 <?php
 require_once 'mysql_conn.php';
+session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($_POST['email']) && !empty($_POST['password'])) {
@@ -18,6 +19,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo "✅ Pass send by client: <b>$password</b><br>";
                 echo "✅ Pass received by server: <b>$password</b><br>";
                 echo "✅ Pass stored in DB: <b>{$user['open_password']}</b>";
+                $_SESSION['user'] = [
+                    'email' => $email
+                ];
+                echo "<script>
+                setTimeout(function() {
+                    window.location.href = 'index.php';
+                }, 3000);
+            </script>";
+            exit;
             } else {
                 echo "❌ Невірний логін або пароль.";
             }

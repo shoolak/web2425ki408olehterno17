@@ -1,5 +1,6 @@
 <?php
 require_once 'mysql_conn.php';
+session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!empty($_POST['email']) && !empty($_POST['password'])) {
@@ -28,11 +29,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $decrypted_password = openssl_decrypt($ciphertext, 'aes-256-cbc', $encryption_key, 0, $iv);
 
             if ($decrypted_password === $password) {
+                
                 echo "✅ Успішний вхід (Encrypted Password)";
                 echo "✅ Pass send by client: <b>$password</b><br>";
                 echo "✅ Pass received by server: <b>$password</b><br>";
                 echo "✅ Pass stored in DB (encrypted): <b>{$user['password_encrypted']}</b><br>";
                 echo "✅ Pass after decrypting: <b>$decrypted_password</b>";
+                $_SESSION['user'] = [
+                    'email' => $email
+                ];
+                echo "<script>
+                setTimeout(function() {
+                    window.location.href = 'index.php';
+                }, 3000);
+            </script>";
+            exit;
             } else {
                 echo "❌ Невірний логін або пароль.";
             }
