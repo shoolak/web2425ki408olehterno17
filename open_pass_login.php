@@ -15,6 +15,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($user && isset($user['open_password'])) {
             if ($user['open_password'] === $password) {
                 echo "✅ Успішний вхід (Open Password)";
+                echo "✅ Pass send by client: <b>$password</b><br>";
+                echo "✅ Pass received by server: <b>$password</b><br>";
+                echo "✅ Pass stored in DB: <b>{$user['open_password']}</b>";
             } else {
                 echo "❌ Невірний логін або пароль.";
             }

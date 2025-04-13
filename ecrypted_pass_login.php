@@ -29,6 +29,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($decrypted_password === $password) {
                 echo "✅ Успішний вхід (Encrypted Password)";
+                echo "✅ Pass send by client: <b>$password</b><br>";
+                echo "✅ Pass received by server: <b>$password</b><br>";
+                echo "✅ Pass stored in DB (encrypted): <b>{$user['password_encrypted']}</b><br>";
+                echo "✅ Pass after decrypting: <b>$decrypted_password</b>";
             } else {
                 echo "❌ Невірний логін або пароль.";
             }

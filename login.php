@@ -46,5 +46,11 @@
         <button type="submit">Увійти (Encrypted Password)</button>
     </form>
 
+    <h2>Вхід через Google</h2>
+    <a href="google-login.php">
+    <button>Увійти з Google</button>
+    </a>
+
+
 </body>
 </html>

@@ -14,6 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Виправлена перевірка (було $user['password'], а має бути введений пароль)
         if ($user && password_verify($password, $user['password_hash'])) {
             echo "✅ Успішний вхід (Hash Password)";
+            echo "✅ Pass send by client: <b>$password</b><br>";
+            echo "✅ Pass received by server: <b>$password</b><br>";
+            echo "✅ Pass stored in DB (hash): <b>{$user['password_hash']}</b>";
         } else {
             echo "❌ Невірний логін або пароль.";
         }
