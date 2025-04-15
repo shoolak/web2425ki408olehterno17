@@ -16,22 +16,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Зберігаємо відкритий пароль
     $open_password = $password;
 
-    // Генеруємо хеш пароля
+
     $password_hash = password_hash($password, PASSWORD_BCRYPT);
 
-    // Шифруємо пароль
-    $config = include('config.php');
-    $encryption_key = $config['encryption_key'];
-    $iv = openssl_random_pseudo_bytes(16); 
-    $encrypted = openssl_encrypt($password, 'aes-256-cbc', $encryption_key, 0, $iv);
-    $password_encrypted = base64_encode($iv . $encrypted);
 
     // Зберігаємо у базу
-    $stmt = $pdo->prepare("INSERT INTO users (name, email, open_password, password_hash, password_encrypted) VALUES (?, ?, ?, ?, ?)");
-    $stmt->execute([$name, $email, $open_password, $password_hash, $password_encrypted]);
+    $stmt = $pdo->prepare("INSERT INTO users (name, email, open_password, password_hash) VALUES (?, ?, ?, ?)");
+    $stmt->execute([$name, $email, $open_password, $password_hash]);
+    
 
     echo "✅ Користувача успішно зареєстровано!";
 }

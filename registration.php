@@ -1,4 +1,4 @@
-<!-- register.php -->
+
 <form method="POST" action="create_user.php">
     <label for="name">Ім'я:</label>
     <input type="text" id="name" name="name" required>
