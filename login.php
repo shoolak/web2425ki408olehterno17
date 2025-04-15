@@ -31,16 +31,22 @@
     <!-- Вхід із зашифрованим паролем -->
     <h2>Вхід із зашифрованим паролем (AES)</h2>
     <form method="POST" action="ecrypted_pass_login.php" onsubmit="return encryptAndSend();">
-    <label>Email:</label>
-    <input type="text" id="email" name="email" required><br><br>
+        <label>Email:</label>
+        <input type="text" id="email" name="email" required><br><br>
 
-    <label>Пароль:</label>
-    <input type="password" id="passwordInput" required><br><br>
+        <label>Пароль:</label>
+        <input type="password" id="passwordInput" required><br><br>
 
-    <input type="hidden" id="ciphertext" name="ciphertext">
-    <button type="submit">Увійти</button>
-</form>
+        <input type="hidden" id="ciphertext" name="ciphertext">
+        <button type="submit">Увійти</button>
     </form>
+
+    <!-- Передаємо ключі з PHP до JS -->
+    <?php
+    $config = include('config.php');
+    $key = $config['encryption_key'];
+    $iv = $config['iv'];
+    ?>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <script>
@@ -48,8 +54,9 @@
         const password = document.getElementById("passwordInput").value;
         const email = document.getElementById("email").value;
 
-        const key = CryptoJS.enc.Utf8.parse("12345678901234567890123456789012"); 
-        const iv = CryptoJS.enc.Utf8.parse("1234567890123456"); 
+        // Передані значення з PHP
+        const key = CryptoJS.enc.Utf8.parse("<?= $key ?>");
+        const iv = CryptoJS.enc.Utf8.parse("<?= $iv ?>");
 
         const encrypted = CryptoJS.AES.encrypt(password, key, {
             iv: iv,
@@ -66,6 +73,7 @@
     }
     </script>
 
+    <!-- Google логін -->
     <h2>Вхід через Google</h2>
     <a href="google-login.php"><button>Увійти з Google</button></a>
 </body>
