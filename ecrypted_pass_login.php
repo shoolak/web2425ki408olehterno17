@@ -2,56 +2,41 @@
 require_once 'mysql_conn.php';
 session_start();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!empty($_POST['email']) && !empty($_POST['password'])) {
-        $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
-        $password = trim($_POST['password']);
+if (!empty($_POST['email']) && !empty($_POST['ciphertext'])) {
+    $email = $_POST['email'];
+    $ciphertext_base64 = $_POST['ciphertext'];
+    $config = include('config.php');
+    $key =  $config['encryption_key'];
+    $iv =  $config['iv'];
 
-        $pdo = getDbConnection();
-        $stmt = $pdo->prepare("SELECT password_encrypted FROM users WHERE email = ?");
-        $stmt->execute([$email]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user && isset($user['password_encrypted'])) {
-            $config = include('config.php');
-            $encryption_key = $config['encryption_key'];
+    // Декодуємо та дешифруємо
+    $ciphertext = base64_decode($ciphertext_base64);
+    $decrypted_password = openssl_decrypt(
+        $ciphertext,
+        'aes-256-cbc',
+        $key,
+        OPENSSL_RAW_DATA,
+        $iv
+    );
 
-            // Декодуємо base64
-            $encrypted_data = base64_decode($user['password_encrypted']);
 
-            // Витягуємо IV (перші 16 байт)
-            $iv = substr($encrypted_data, 0, 16);
+    $pdo = getDbConnection();
+    $stmt = $pdo->prepare("SELECT open_password FROM users WHERE email = ?");
+    $stmt->execute([$email]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            // Витягуємо зашифрований текст (решта)
-            $ciphertext = substr($encrypted_data, 16);
-
-            // Розшифровуємо
-            $decrypted_password = openssl_decrypt($ciphertext, 'aes-256-cbc', $encryption_key, 0, $iv);
-
-            if ($decrypted_password === $password) {
-                
-                echo "✅ Успішний вхід (Encrypted Password)";
-                echo "✅ Pass send by client: <b>$password</b><br>";
-                echo "✅ Pass received by server: <b>$password</b><br>";
-                echo "✅ Pass stored in DB (encrypted): <b>{$user['password_encrypted']}</b><br>";
-                echo "✅ Pass after decrypting: <b>$decrypted_password</b>";
-                $_SESSION['user'] = [
-                    'email' => $email
-                ];
-                echo "<script>
-                setTimeout(function() {
-                    window.location.href = 'index.php';
-                }, 3000);
-            </script>";
-            exit;
-            } else {
-                echo "❌ Невірний логін або пароль.";
-            }
-        } else {
-            echo "❌ Користувача не знайдено.";
-        }
+    if ($user && $user['open_password'] === $decrypted_password) {
+        $_SESSION['user'] = ['email' => $email];
+        echo "✅ Успішний вхід<br>";
+        echo "✅ Пароль (base64 з клієнта):\n" . htmlspecialchars($ciphertext_base64) . "\n\n";
+        echo "✅ Дешифрований пароль:\n" . htmlspecialchars($decrypted_password) . "\n\n";
+        echo "✅ Збережений пароль у БД:\n" . htmlspecialchars($user['open_password'] ?? '[not found]') . "\n\n";
+        echo "<script>setTimeout(() => location.href = 'index.php', 5000);</script>";
     } else {
-        echo "⚠️ Будь ласка, заповніть всі поля.";
+        echo "❌ Невірний пароль або користувач не знайдений";
     }
+} else {
+    echo "⚠️ Введіть усі дані!";
 }
 ?>

@@ -53,7 +53,14 @@
         <button type="submit">Зареєструватися</button>
     </form>
     
-    <a href="login.php">Увійти</a>
+    <?php session_start(); ?>
+    <?php if (isset($_SESSION['user'])): ?>
+        <p> Привіт, <?= htmlspecialchars($_SESSION['user']['email']) ?>!</p>
+        <a href="logout.php">Вийти</a>
+    <?php else: ?>
+        <a href="login.php">Увійти</a>
+    <?php endif; ?>
+
 
 
     <script src="script.js"></script>
