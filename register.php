@@ -21,8 +21,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ]));
 
     // 🔧 Налаштування WhatsApp Cloud API
-    $token = 'EAAX2cHJkBvgBOZBsYFj3c7Fun1DrnE2SWfEa8QNOBs0uw68sLE0AlQSzpwLgDeHHIsXG1i0isfmsj5fIezZC9A9kvZAeOnekcuolrF77A5XUp00NPsYq98HZAJkr72Ezzfn7a8jWcSb4NySNLLZAOhVnHAFkZAWzp5dye42uv0ZBZCZB1Pm2ORFtyZAVDeISUYWhjqegVmy8nopMtW6vEZCmHyYmJRu3byI';
-    $phone_number_id = '610912325443927';
+    $config = include('config.php');
+    $token =  $config['token'];
+    $phone_number_id =  $config['phone_number_id'];
     $template_name = 'hello_world'; 
     $language_code = 'en_US'; 
     $url = "https://graph.facebook.com/v19.0/$phone_number_id/messages";
