@@ -10,7 +10,7 @@ $config = include('config.php');
 $client->setClientId($config['google_client_id']);
 $client->setClientSecret($config['google_client_secret']);
 if ($_SERVER['SERVER_NAME'] == 'localhost') {
-    $client->setRedirectUri('http://localhost/web_business_card/web2425ki408olehterno17/google-callback.php'); 
+    $client->setRedirectUri('http://localhost/phpproj/web2425ki408olehterno17/google-callback.php'); 
 } else {
     $client->setRedirectUri('http://labwebphpnulp.infinityfreeapp.com/google-callback.php'); 
 }
