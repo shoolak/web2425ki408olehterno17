@@ -39,10 +39,16 @@ if (isset($_GET['code'])) {
 
     if (!$user) {
         echo "❌ Користувача з таким емейлом не існує";
+        exit();
     }
-    else{
-        echo "✅ Привіт, $name! Ви увійшли через Google.";
-    }
+    $_SESSION['user'] = [
+        'name' => $name,
+        'email' => $email
+    ];
+    
+ 
+    header("Location: index.php");
+    exit();
 
     
 } else {
