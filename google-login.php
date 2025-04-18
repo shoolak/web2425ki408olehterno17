@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require_once 'vendor/autoload.php';
 
 session_start();
@@ -11,7 +15,7 @@ $client->setClientSecret($config['google_client_secret']);
 if ($_SERVER['SERVER_NAME'] == 'localhost') {
     $client->setRedirectUri('http://localhost/phpproj/web2425ki408olehterno17/google-callback.php'); 
 } else {
-    $client->setRedirectUri('http://labwebphpnulp.infinityfreeapp.com/google-callback.php'); 
+    $client->setRedirectUri('http://http://dsadtestphplab.wuaze.com/google-callback.php'); 
 }
 $client->addScope('email');
 $client->addScope('profile');
