@@ -61,7 +61,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($error) {
         echo "❌ CURL Error: $error";
     } else {
-        echo "✅ Користувача успішно зареєстровано!<br>";
         echo "📲 Відповідь WhatsApp API: $response";
     }
 

